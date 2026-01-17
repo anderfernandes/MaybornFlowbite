@@ -1,0 +1,716 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Online Reservation Form - Mayborn Science Theater</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+  </head>
+  <body class="bg-body-tertiary">
+    <div class="container">
+      <main>
+        <div class="py-5 text-center">
+          <img
+            class="d-block mx-auto mb-4"
+            src="http://localhost:8888/themes/MaybornBootstrap5/images/logo.png"
+            alt=""
+            width="70"
+            height="84"
+          />
+          <h1 class="h2">Reservation Form</h1>
+          <p class="lead">
+            Make sure you read our reservation rules before putting in a
+            reservation.
+          </p>
+        </div>
+        <div class="container" x-data="reservation" x-init="fetchData">
+          <div class="row">
+            <div class="col-sm-4 my-1">
+              <div class="card">
+                <div class="card-body">
+                  <div class="form-check">
+                    <input
+                      checked
+                      value="school"
+                      class="form-check-input"
+                      type="radio"
+                      name="postshow"
+                      id="postshowStartalk"
+                    />
+                    <label class="form-check-label h5" for="postshowStartalk">
+                      School Group
+                    </label>
+                  </div>
+                  <p class="card-text ms-4 text-body-secondary">
+                    For public, private and home schools.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4 my-1">
+              <div class="card">
+                <div class="card-body">
+                  <div class="form-check">
+                    <input
+                      disabled
+                      value="civic"
+                      class="form-check-input"
+                      type="radio"
+                      name="postshow"
+                      id="postshowStartalk"
+                    />
+                    <label class="form-check-label h5" for="postshowStartalk">
+                      Civic Group
+                    </label>
+                  </div>
+                  <p class="card-text ms-4 text-body-secondary">
+                    Coming online soon! Call us to reserve.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4 my-1">
+              <div class="card">
+                <div class="card-body">
+                  <div class="form-check">
+                    <input
+                      disabled
+                      value="birthday"
+                      class="form-check-input"
+                      type="radio"
+                      name="type"
+                      id="postshowStartalk"
+                    />
+                    <label class="form-check-label h5" for="postshowStartalk">
+                      Birthday Party
+                    </label>
+                  </div>
+                  <p class="card-text ms-4 text-body-secondary">
+                    Coming online soon! Call us to reserve.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr class="my-3" />
+          <h4 class="my-3">
+            Attendance (<span x-text="students+teachers+parents"></span>/180
+            selected)
+          </h4>
+          <div class="row">
+            <div class="col-md-4 my-1">
+              <div class="card text-center">
+                <h5 class="card-header">Students</h5>
+                <div class="card-body">
+                  <h1 class="card-title" x-text="students">20</h1>
+                  <label for="studentsRange" class="form-label">Students</label>
+                  <input
+                    type="range"
+                    x-model.number="students"
+                    class="form-range"
+                    min="20"
+                    max="180"
+                    id="studentsRange"
+                  />
+                </div>
+                <div class="card-footer text-body-secondary">
+                  Minimum to reserve is 20 paying tickets.
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 my-1">
+              <div class="card text-center">
+                <h5 class="card-header">Teachers</h5>
+                <div class="card-body">
+                  <h1 class="card-title" x-text="teachers">2</h1>
+                  <label for="teachersRange" class="form-label">Teachers</label>
+                  <input
+                    type="range"
+                    x-model.number="teachers"
+                    class="form-range"
+                    min="2"
+                    max="180"
+                    id="teachersRange"
+                  />
+                </div>
+                <div class="card-footer text-body-secondary">
+                  Adults who will help supervise the kids.
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 my-1">
+              <div class="card text-center">
+                <h5 class="card-header">Parents</h5>
+                <div class="card-body">
+                  <h1 class="card-title" x-text="parents">0</h1>
+                  <label for="parentsRange" class="form-label">Parents</label>
+                  <input
+                    type="range"
+                    x-model.number="parents"
+                    class="form-range"
+                    min="0"
+                    max="180"
+                    id="parentsRange"
+                  />
+                </div>
+                <div class="card-footer text-body-secondary">
+                  Billed in the same invoice as the school.
+                </div>
+              </div>
+            </div>
+          </div>
+          <h4 class="my-3">Date and Time</h4>
+          <div
+            class="alert alert-danger"
+            role="alert"
+            x-show="selectedDate != undefined && selectedDate.getTime() <= minDate.getTime()"
+          >
+            You have selected an invalid date. Please select a date that is at
+            least a week from today.
+          </div>
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="mb-3">
+                <label class="form-label" for="exampleInputEmail1">Date</label>
+                <input
+                  aria-describedby="fieldTripDate"
+                  class="form-control"
+                  id="fieldTripDate"
+                  type="date"
+                  x-on:change="onDateChange"
+                  x-bind:min="minimumDate"
+                />
+                <div class="form-text" id="emailHelp">
+                  The date of your event(s), at least 7 days from today.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <template x-for="event in events">
+              <div class="col-md-6">
+                <div class="card mb-3">
+                  <div class="row g-0">
+                    <div class="col-5 col-md-3">
+                      <img
+                        x-bind:src="event.show ? getShow(event).cover : 'http://localhost:8888/themes/MaybornBootstrap5/images/image.png'"
+                        src="http://localhost:8888/sites/default/assets/image.png"
+                        class="img-fluid rounded-start img-fit"
+                        alt="Show Cover"
+                      />
+                    </div>
+                    <div class="col-7 col-md-9">
+                      <div class="card-body">
+                        <div class="form-check">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            x-model="event.checked"
+                            x-bind:id="event.date.toString()"
+                          />
+                          <label
+                            class="form-check-label"
+                            x-bind:for="event.date.toString()"
+                            x-text="format(event.date)"
+                          >
+                            Date
+                          </label>
+                        </div>
+                        <div class="card-text my-2">
+                          <select
+                            x-bind:disabled="!event.checked"
+                            class="form-select"
+                            aria-label="Select one show"
+                            x-model="event.show"
+                          >
+                            <option selected>Select one</option>
+                            <template x-for="show in shows">
+                              <option
+                                x-bind:value="JSON.stringify(show)"
+                                x-text="`${show.name} [${show.type}]`"
+                              >
+                                Show Option
+                              </option>
+                            </template>
+                          </select>
+                        </div>
+                        <p class="card-text">
+                          <small
+                            class="text-body-secondary"
+                            x-text="event.show ? JSON.parse(event.show).type : ''"
+                            >Show Type</small
+                          >
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </div>
+          <h4 class="my-3">Post Show</h4>
+          <div class="row">
+            <div class="col-sm-6 my-1">
+              <div class="card">
+                <div class="card-body">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="postshow"
+                      id="postshowStartalk"
+                    />
+                    <label class="form-check-label h5" for="postshowStartalk">
+                      Star Talk
+                    </label>
+                  </div>
+                  <p class="card-text ms-4">
+                    A tour of the constellations and planets you can see if the
+                    current evening sky.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 my-1">
+              <div class="card">
+                <div class="card-body">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="postshow"
+                      id="postshowUniview"
+                    />
+                    <label class="form-check-label h5" for="postshowUniview">
+                      Uniview
+                    </label>
+                  </div>
+                  <p class="card-text ms-4">
+                    A flight through a few planets of the solar system and/or
+                    other galaxies.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h4 class="my-3">Organization Information</h4>
+          <div class="row">
+            <div class="col-md-6">
+              <label for="exampleInputEmail1" class="form-label"
+                >Organization Name</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="organizationInput"
+                aria-describedby="organization"
+                placeholder="Organization Name"
+                x-model="query"
+                name="organization"
+              />
+              <div id="emailHelp" class="form-text">
+                Enter the name of your organization
+              </div>
+            </div>
+            <div class="col-md-6">
+              <template
+                x-for="{id, name, city, state} in availableOrganizations"
+              >
+                <div class="form-check py-2">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    x-model="schoolId"
+                    x-bind:value="id"
+                    x-bind:id="'organization-' + id"
+                    name="organization"
+                  />
+                  <label
+                    class="form-check-label"
+                    x-bind:for="'organization-' + id"
+                    x-text="name"
+                  >
+                    Default checkbox </label
+                  ><br />
+                  <span
+                    x-show="id > 0"
+                    class="text-body-secondary"
+                    x-text="city + ' ,' + state"
+                    >city</span
+                  >
+                </div>
+              </template>
+            </div>
+          </div>
+          <div class="row my-2" x-show="schoolId == 0">
+            <div class="col-12">
+              <div class="mb-3">
+                <label for="firstNameInput" class="form-label"
+                  >School or Organization Name</label
+                >
+                <input
+                  class="form-control"
+                  id="schoolNameInput"
+                  aria-describedby="schoolNameInput"
+                  placeholder="School or Organization Name"
+                />
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="mb-3">
+                <label for="firstNameInput" class="form-label">Address</label>
+                <input
+                  class="form-control"
+                  id="lastNameInput"
+                  aria-describedby="lastNameInput"
+                  placeholder="Last Name"
+                />
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="firstNameInput" class="form-label">City</label>
+                <input
+                  class="form-control"
+                  id="lastNameInput"
+                  aria-describedby="lastNameInput"
+                  placeholder="Last Name"
+                />
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="firstNameInput" class="form-label">State</label>
+                <select
+                  class="form-select"
+                  aria-label="Default select example"
+                  disabled
+                >
+                  <option selected>Texas</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label for="firstNameInput" class="form-label">ZIP</label>
+                <input
+                  min="5"
+                  max="5"
+                  class="form-control"
+                  id="lastNameInput"
+                  aria-describedby="lastNameInput"
+                  placeholder="ZIP"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="firstNameInput" class="form-label">Phone</label>
+                <input
+                  type="phone"
+                  class="form-control"
+                  id="lastNameInput"
+                  aria-describedby="lastNameInput"
+                  placeholder="Phone"
+                />
+              </div>
+            </div>
+          </div>
+          <h4 class="my-3">Group Leader Name</h4>
+          <div class="row my-2">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="firstNameInput" class="form-label"
+                  >First Name</label
+                >
+                <input
+                  class="form-control"
+                  id="firstNameInput"
+                  aria-describedby="firstNameInput"
+                  placeholder="First Name"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="firstNameInput" class="form-label">Last Name</label>
+                <input
+                  class="form-control"
+                  id="lastNameInput"
+                  aria-describedby="lastNameInput"
+                  placeholder="Last Name"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="firstNameInput" class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="lastNameInput"
+                  aria-describedby="lastNameInput"
+                  placeholder="Email"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="firstNameInput" class="form-label">Phone</label>
+                <input
+                  type="phone"
+                  class="form-control"
+                  id="lastNameInput"
+                  aria-describedby="lastNameInput"
+                  placeholder="Phone"
+                />
+              </div>
+            </div>
+          </div>
+          <h4 class="my-3">Overview</h4>
+          <template x-for="event in selectedEvents">
+            <div class="row">
+              <div class="col-md-6 mb-3 mb-sm-0">
+                <div class="card mb-3" style="max-width: 540px">
+                  <div class="row g-0">
+                    <div class="col-md-8">
+                      <div class="card-body">
+                        <h5
+                          class="card-title text-truncate"
+                          x-text="getShow(event).name"
+                        >
+                          Show Name
+                        </h5>
+                        <p class="card-text" x-text="format(event.date)">
+                          Date and Time
+                        </p>
+                        <p class="card-text">
+                          <small
+                            class="text-body-secondary"
+                            x-text="getShow(event).type"
+                            >Show Type</small
+                          >
+                        </p>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <img
+                        x-bind:src="event.show ? getShow(event).cover : 'http://localhost:8888/themes/MaybornBootstrap5/images/image.png'"
+                        class="img-fluid rounded-start img-fit"
+                        alt="Show Card"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+          <div x-show="schoolId">
+            <div class="card">
+              <h5 class="card-header">Organization</h5>
+              <div class="card-body">
+                <h5 class="card-title" x-text="selectedOrganization?.name">
+                  Special title treatment
+                </h5>
+                <p
+                  class="card-text"
+                  x-text="selectedOrganization?.city + ', ' + selectedOrganization?.state"
+                >
+                  With supporting text below as a natural lead-in to additional
+                  content.
+                </p>
+                <a href="#" class="btn btn-primary">Change</a>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Notes</label
+              >
+              <textarea
+                placeholder="Write anything that will help us with your reservation. Optional."
+                class="form-control"
+                id="exampleFormControlTextarea1"
+                rows="3"
+              ></textarea>
+            </div>
+          </div>
+          <div class="col-12 text-end">
+            <button type="type" class="btn btn-primary btn-lg" disabled>
+              Submit
+            </button>
+            <button type="type" class="btn btn-outline-primary btn-lg">
+              Clear
+            </button>
+          </div>
+        </div>
+      </main>
+      <footer class="my-5 pt-5 text-body-secondary text-center text-small">
+        <p class="mb-1">© 2003–2025 Mayborn Science Theater</p>
+        <ul class="list-inline">
+          <li class="list-inline-item"><a href="#">Home</a></li>
+          <li class="list-inline-item"><a href="#">Schedule</a></li>
+          <li class="list-inline-item"><a href="#">Shows</a></li>
+        </ul>
+      </footer>
+    </div>
+  </body>
+  <script>
+    document.addEventListener("alpine:init", () => {
+      Alpine.data("reservation", () => {
+        const TIMEZONEOFFSET = new Date().getTimezoneOffset() / 60;
+        const minDate = new Date();
+        minDate.setHours(0);
+        minDate.setMinutes(0);
+        minDate.setSeconds(0);
+        minDate.setMilliseconds(0);
+        minDate.setDate(minDate.getDate() + 7);
+        return {
+          students: 20,
+          teachers: 2,
+          parents: 0,
+          shows: [],
+          organizations: [],
+          schoolId: 0,
+          events: [],
+          get selectedEvents() {
+            return this.events.filter((e) => e.checked);
+          },
+          get availableOrganizations() {
+            if (this.query) {
+              const organizations = this.organizations.filter((o) =>
+                o.name.toLowerCase().includes(this.query.toLowerCase()),
+              );
+              organizations.push({
+                id: 0,
+                name: "My organization is not on the list",
+              });
+              return organizations;
+            }
+
+            return [];
+          },
+          get selectedOrganization() {
+            if (this.schoolId > 0)
+              return this.organizations.find((o) => o.id == this.schoolId);
+            return undefined;
+          },
+          async onDateChange(e) {
+            this.selectedDate = new Date(e.currentTarget.value);
+            this.selectedDate.setHours(
+              this.selectedDate.getHours() + TIMEZONEOFFSET,
+            );
+            //console.log(this.selectedDate.getTime(), this.minDate.getTime());
+            if (this.selectedDate.getTime() < this.minDate.getTime()) {
+              alert(
+                "The selected date must be at least a week away from today.",
+              );
+              this.events = [];
+              return;
+            }
+            const url = new URL(
+              "http://192.168.1.218:8000/api/public/findAvailableEvents",
+            );
+            url.searchParams.set("date", e.currentTarget.value);
+
+            url.searchParams.set(
+              "seats",
+              this.students + this.teachers + this.parents,
+            );
+            const req = await fetch(url);
+
+            const res = await req.json();
+
+            this.events = [];
+
+            for (let i = 0; i < 4; i++) {
+              let exists = false;
+
+              const date = new Date(
+                this.selectedDate.getFullYear(),
+                this.selectedDate.getMonth(),
+                this.selectedDate.getDate(),
+                9 + i,
+                30,
+                0,
+                0,
+              );
+
+              for (item of res.data) {
+                const existingDate = new Date(item.start);
+                exists = existingDate.getTime() == date.getTime();
+              }
+
+              if (!exists)
+                this.events.push({
+                  date,
+                  checked: false,
+                });
+            }
+          },
+          async fetchShows() {
+            const url = new URL("http://192.168.1.218:8000/api/shows");
+            const req = await fetch(url);
+            const res = await req.json();
+            this.shows = res.data;
+          },
+          async fetchOrganizations() {
+            const url = new URL("http://192.168.1.218:8000/api/organizations");
+            const req = await fetch(url);
+            this.organizations = await req.json();
+          },
+          async fetchData() {
+            await this.fetchShows();
+            await this.fetchOrganizations();
+          },
+          getShow(event) {
+            if (event.show === undefined)
+              return { name: "", type: "", date: "" };
+            return JSON.parse(event.show);
+          },
+          selectedDate: undefined,
+          query: "",
+          minDate,
+          get minimumDate() {
+            return this.minDate.toLocaleDateString("en-CA", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+            });
+          },
+          format(d, type = "datetime") {
+            const date = d.toLocaleString("en-US", {
+              weekday: "short",
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            });
+            const time = d.toLocaleString("en-US", {
+              hour: "numeric",
+              minute: "2-digit",
+            });
+            return `${date} @ ${time}`;
+          },
+        };
+      });
+    });
+  </script>
+  <style>
+    .img-fit {
+      object-fit: cover;
+      height: 9rem;
+      width: 100%;
+      object-position: top;
+    }
+  </style>
+</html>
