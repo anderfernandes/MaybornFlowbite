@@ -2,10 +2,10 @@ version: "3.3"
 
 services:
   # Astral (must be built separetely)
-  astral:
-    image: anderfernandes/astral:1.0.0-alpha.5
-    ports:
-      - 8000:8000
+  #astral:
+  #  image: localhost/astral:1.0.0-alpha.5
+  #  ports:
+  #    - 8000:8000
 
   muracms:
     image: murasoftware/muracms:7.1
