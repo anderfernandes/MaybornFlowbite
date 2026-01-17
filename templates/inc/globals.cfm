@@ -1,1 +1,1 @@
-<cfset api_url="http://192.168.1.218:8000/api">
+<cfset api_url="http://192.168.1.187:8000/api">

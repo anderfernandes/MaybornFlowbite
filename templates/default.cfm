@@ -4,10 +4,10 @@
   <head>
     <cfinclude template="inc/html_head.cfm" />
   </head>
-  <body style="margin-top:60px">
+  <body style="margin-top:64px">
     <cfinclude template="inc/navbar.cfm" />
     <section class="h-[calc(100vh-60px)] w-full flex flex-col items-center justify-center text-center px-4" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/sites/default/assets/Image/cover.jpg');background-size:cover;background-position:bottom">
-      <h1 class="mb-4 text-4xl font-bold text-white tracking-tight text-heading md:text-5xl lg:text-6xl">
+      <h1 class="mb-4 text-4xl font-bold text-white tracking-tight md:text-5xl lg:text-6xl">
         Welcome to our universe!
       </h1>
       <p class="mb-6 text-lg font-normal text-gray-400 lg:text-xl sm:px-16 xl:px-48">
@@ -17,7 +17,7 @@
         <a href="/" class="inline-flex items-center text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-base px-5 py-3 focus:outline-none">Learn more</a>
       </div>
     </section>
-    <main class="mx-auto max-w-screen-xl py-4 grid content-start gap-4 px-4">
+    <main class="mx-auto max-w-7xl py-4 grid content-start gap-4 px-4">
       <h1 class="text-4xl text-center font-extrabold pt-4">Schedule</h1>
       <p class="text-center lg:mx-48 text-body text-lg">
         We are located at the campus of Central Texas College in Killeen, Texas. Below you will see a list of events happening within the next 30 days. If you have any questions, on weekdays, call 254-526-1768. On weekends, call 254-526-1799.
@@ -32,7 +32,7 @@
             </h4>
             <div class="flex gap-2 w-full pt-0 pb-2 md:py-4 md:px-4 overflow-x-auto">
               <template x-for="event in events">
-                <a x-bind:href="`/events?id=${event.id}`" class="flex-none rounded w-56 h-[26rem] border border-default rounded-base shadow-xs md:hover:scale-105">
+                <a x-bind:href="`/events?id=${event.id}`" class="flex-none rounded w-56 h-104 border border-default shadow-xs md:hover:scale-105">
                   <div class="flex flex-col">
                     <h5 class="font-extrabold text-lg p-4 truncate" x-text="event.show.name">
                     </h5>
@@ -76,7 +76,7 @@
         </div>
         <div class="grid md:grid-cols-3 gap-2">
           <template x-for="show in filteredShows">
-            <a x-bind:href="`/shows?id=${show.id}`" class="flex-none rounded h-48 border border-default rounded-base shadow-xs hover:bg-gray-50">
+            <a x-bind:href="`/shows?id=${show.id}`" class="flex-none rounded h-48 border border-default shadow-xs hover:bg-gray-50">
               <div class="flex">
                 <img class="rounded w-32" x-bind:src="show.cover" />
                 <div class="grid gap-2 content-start m-4 grow">
@@ -178,8 +178,8 @@
         </div>
       </div>
       <section class="bg-white dark:bg-gray-900">
-        <div class="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
-          <div class="max-w-screen-md mb-8 lg:mb-16">
+        <div class="py-8 px-4 mx-auto max-w-7xl sm:py-16 lg:px-6">
+          <div class="max-w-3xl mb-8 lg:mb-16">
               <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">Scheduling a field trip is simple and fast!</h2>
               <p class="text-gray-500 sm:text-xl dark:text-gray-400">You send us your group information and you will get a confirmation within 2 business days.</p>
           </div>
@@ -222,11 +222,11 @@
           </div>
         </div>
       </section>
-      <section class="grid gap-2">
+      <section class="grid gap-2 max-w-4xl mx-auto">
         <div class="grid gap-2 lg:grid-cols-3">
           <div class="flex border border-default p-4 rounded-base">
             <div class="flex items-center h-5">
-                <input checked id="helper-radio" aria-describedby="helper-radio-text" type="radio" value="" class="w-4 h-4 text-neutral-primary border-default-medium bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border border-default appearance-none">
+                <input checked id="helper-radio" aria-describedby="helper-radio-text" type="radio" value="" class="w-4 h-4 text-neutral-primary border-default-medium bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border appearance-none">
             </div>
             <div class="ms-2 text-sm select-none">
                 <label for="helper-radio" class="font-medium text-heading mb-1">School Group</label>
@@ -235,7 +235,7 @@
           </div>
           <div class="flex border border-default p-4 rounded-base">
             <div class="flex items-center h-5">
-                <input disabled id="helper-radio" aria-describedby="helper-radio-text" type="radio" value="" class="w-4 h-4 text-neutral-primary border-default-medium bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border border-default appearance-none">
+                <input disabled id="helper-radio" aria-describedby="helper-radio-text" type="radio" value="" class="w-4 h-4 text-neutral-primary border-default-medium bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border appearance-none">
             </div>
             <div class="ms-2 text-sm select-none">
                 <label for="helper-radio" class="font-medium text-heading mb-1">Civic Group</label>
@@ -244,7 +244,7 @@
           </div>
           <div class="flex border border-default p-4 rounded-base">
             <div class="flex items-center h-5">
-                <input disabled id="helper-radio" aria-describedby="helper-radio-text" type="radio" value="" class="w-4 h-4 text-neutral-primary border-default-medium bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border border-default appearance-none">
+                <input disabled id="helper-radio" aria-describedby="helper-radio-text" type="radio" value="" class="w-4 h-4 text-neutral-primary border-default-medium bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border appearance-none">
             </div>
             <div class="ms-2 text-sm select-none">
                 <label for="helper-radio" class="font-medium text-heading mb-1">Birthday Party</label>
@@ -282,9 +282,9 @@
           </div>
         </div>
         <div class="grid gap-2 lg:grid-cols-2">
-          <div class="flex flex-col items-center bg-neutral-primary-soft p-6 border border-default rounded-base shadow-xs md:flex-row md:max-w-xl md:flex-row md:max-w-xl">
-            <img class="object-cover w-full rounded-base h-64 md:h-auto md:w-48 mb-4 md:mb-0" src="/themes/MaybornFlowbite/images/image.png" alt="">
-            <div class="flex flex-col justify-between md:p-4 leading-normal">
+          <div class="flex flex-col items-center bg-neutral-primary-soft p-6 border border-default rounded-base shadow-xs md:flex-row md:max-w-xl">
+            <img class="w-full rounded-base h-42 md:w-32 object-cover mb-4 md:mb-0" src="/themes/MaybornFlowbite/images/image.png" alt="">
+            <div class="flex flex-col justify-between md:p-4 leading-normal gap-2">
                 <div class="flex items-center">
                     <input checked id="checked-checkbox" type="checkbox" value="" class="w-4 h-4 border border-default-medium rounded-xs bg-neutral-secondary-medium focus:ring-2 focus:ring-brand-soft">
                     <label for="checked-checkbox" class="select-none ms-2 text-sm font-medium text-heading">Fri, Jan 30, 2026 @ 9:30 AM</label>
@@ -303,6 +303,111 @@
                 <p class="mb-6 text-body">Planetarium</p>
             </div>
           </div>
+        </div>
+        <h5 class="font-bold text-xl py-2">Post Show</h5>
+        <div class="grid gap-2 lg:grid-cols-2">
+          <div class="flex border border-default p-4 rounded-base">
+            <div class="flex items-center h-5">
+                <input checked name="postshow" id="helper-radio" aria-describedby="helper-radio-text" type="radio" value="" class="w-4 h-4 text-neutral-primary bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border border-default appearance-none">
+            </div>
+            <div class="ms-2 text-sm select-none">
+                <label for="helper-radio" class="font-medium text-heading mb-1">Star Talk</label>
+                <p id="helper-radio-text" class="text-xs font-normal text-body">A tour of the current evening sky showing all the constellations, planets and notable stars.</p>
+            </div>
+          </div>
+          <div class="flex border border-default p-4 rounded-base">
+            <div class="flex items-center h-5">
+                <input name="postshow" id="helper-radio" aria-describedby="helper-radio-text" type="radio" value="" class="w-4 h-4 text-neutral-primary border-default-medium bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border appearance-none">
+            </div>
+            <div class="ms-2 text-sm select-none">
+                <label for="helper-radio" class="font-medium text-heading mb-1">Uniview</label>
+                <p id="helper-radio-text" class="text-xs font-normal text-body">A flight through the planets of our solar system, other galaxies and beyond.</p>
+            </div>
+          </div>
+        </div>
+        <h5 class="font-bold text-xl py-2">Organization Information</h5>
+        <div>
+          <div class="grid gap-6 mb-6 md:grid-cols-2">
+            <div>
+                <label for="first_name" class="block mb-2.5 text-sm font-medium text-heading">Enter the name of your organization</label>
+                <input type="text" id="first_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Organization Name" required />
+            </div>
+            <div>
+              <div class="grid gap-6">
+                <div class="flex">
+                  <div class="flex items-center h-5">
+                    <input id="default-radio-1" type="radio" value="" name="default-radio" class="w-4 h-4 text-neutral-primary bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border border-default appearance-none">
+                  </div>
+                  <div class="ms-2 text-sm select-none">
+                      <label for="helper-checkbox" class="font-medium text-heading">Central Texas College</label>
+                      <p id="helper-checkbox-text" class="text-xs font-normal text-body">Killeen, Texas</p>
+                  </div>
+                </div>
+                <div class="flex">
+                  <div class="flex items-center h-5">
+                      <input id="default-radio-1" type="radio" value="" name="default-radio" class="w-4 h-4 text-neutral-primary bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border border-default appearance-none">
+                  </div>
+                  <div class="ms-2 text-sm select-none">
+                      <label for="helper-checkbox" class="font-medium text-heading">Mayborn Science Theater</label>
+                      <p id="helper-checkbox-text" class="text-xs font-normal text-body">Killeen, Texas</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="grid gap-6 mb-6 md:grid-cols-2">
+            <div class="col-span-2">
+                <label for="first_name" class="block mb-2.5 text-sm font-medium text-heading">Organization Name</label>
+                <input type="text" id="first_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Organization Name" required />
+            </div>
+            <div>
+                <label for="last_name" class="block mb-2.5 text-sm font-medium text-heading">Address</label>
+                <input type="text" id="last_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Address" required />
+            </div>
+            <div>
+                <label for="last_name" class="block mb-2.5 text-sm font-medium text-heading">City</label>
+                <input type="text" id="last_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="City" required />
+            </div>
+            <div>
+                <label for="last_name" class="block mb-2.5 text-sm font-medium text-heading">State</label>
+                <input value="Texas" disabled type="text" id="last_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="State" required />
+            </div>
+            <div>
+                <label for="last_name" class="block mb-2.5 text-sm font-medium text-heading">ZIP</label>
+                <input type="text" id="last_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="ZIP" required />
+            </div>
+            <div>
+                <label for="last_name" class="block mb-2.5 text-sm font-medium text-heading">Phone</label>
+                <input type="phone" min="10" max="10" id="last_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Phone" required />
+            </div>
+        </div>
+        <h5 class="font-bold text-xl py-2">Organizer Information</h5>
+        <div>
+          <div class="grid gap-6 mb-6 md:grid-cols-2">
+            <div>
+                <label for="last_name" class="block mb-2.5 text-sm font-medium text-heading">First Name</label>
+                <input disabled type="text" id="last_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="First Name" required />
+            </div>
+            <div>
+                <label for="last_name" class="block mb-2.5 text-sm font-medium text-heading">Last Name</label>
+                <input type="text" id="last_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Last Name" required />
+            </div>
+            <div>
+                <label for="last_name" class="block mb-2.5 text-sm font-medium text-heading">Email</label>
+                <input disabled type="email" id="last_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Email" required />
+            </div>
+            <div>
+                <label for="last_name" class="block mb-2.5 text-sm font-medium text-heading">Phone</label>
+                <input type="text" id="last_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Phone" required />
+            </div>
+          </div>
+        </div>
+        <h5 class="font-bold text-xl py-2">Overview</h5>
+        <div class="flex justify-end gap-2">
+          <button type="button" class="text-white bg-brand box-border border border-transparent mt-4 hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">Start Over</button>
+          <button type="button" class="text-body bg-neutral-secondary-medium box-border border border-default-medium mt-4 hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">Submit</button>
         </div>
       </section>
     </main>
