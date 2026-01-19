@@ -1,20 +1,27 @@
 document.addEventListener("alpine:init", () => {
   Alpine.data("reservation", () => {
     const TIMEZONEOFFSET = new Date().getTimezoneOffset() / 60;
+    
     const minDate = new Date();
     minDate.setHours(0);
     minDate.setMinutes(0);
     minDate.setSeconds(0);
     minDate.setMilliseconds(0);
     minDate.setDate(minDate.getDate() + 7);
+    
+    const API_URL = "http://192.168.1.187:8888/api"
+    
     return {
       students: 20,
-      teachers: 2,
+      teachers: 1,
       parents: 0,
       shows: [],
       organizations: [],
       schoolId: 0,
       events: [],
+      get totalAttendance() {
+        return this.students + this.teachers + this.parents
+      },
       get selectedEvents() {
         return this.events.filter((e) => e.checked);
       },
@@ -51,7 +58,7 @@ document.addEventListener("alpine:init", () => {
           return;
         }
         const url = new URL(
-          "http://192.168.1.218:8000/api/public/findAvailableEvents",
+          API_URL + "/find-available-events",
         );
         url.searchParams.set("date", e.currentTarget.value);
 
@@ -91,13 +98,13 @@ document.addEventListener("alpine:init", () => {
         }
       },
       async fetchShows() {
-        const url = new URL("http://192.168.1.218:8000/api/shows");
+        const url = new URL(API_URL + "/shows");
         const req = await fetch(url);
         const res = await req.json();
         this.shows = res.data;
       },
       async fetchOrganizations() {
-        const url = new URL("http://192.168.1.218:8000/api/organizations");
+        const url = new URL(API_URL + "/organizations");
         const req = await fetch(url);
         this.organizations = await req.json();
       },

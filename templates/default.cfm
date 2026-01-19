@@ -222,87 +222,139 @@
           </div>
         </div>
       </section>
-      <section class="grid gap-2 max-w-4xl mx-auto">
+      <section class="grid gap-2 max-w-4xl mx-auto" x-data="reservation" x-init="fetchData">
         <div class="grid gap-2 lg:grid-cols-3">
           <div class="flex border border-default p-4 rounded-base">
             <div class="flex items-center h-5">
-                <input checked id="helper-radio" aria-describedby="helper-radio-text" type="radio" value="" class="w-4 h-4 text-neutral-primary border-default-medium bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border appearance-none">
+                <input checked aria-describedby="helper-radio-text" type="radio" value="school-group" class="w-4 h-4 text-neutral-primary border-default-medium bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border appearance-none">
             </div>
             <div class="ms-2 text-sm select-none">
                 <label for="helper-radio" class="font-medium text-heading mb-1">School Group</label>
                 <p id="helper-radio-text" class="text-xs font-normal text-body">For public, private and home schols.</p>
             </div>
           </div>
-          <div class="flex border border-default p-4 rounded-base">
+          <div class="flex border border-default p-4 rounded-base bg-disabled cursor-not-allowed">
             <div class="flex items-center h-5">
-                <input disabled id="helper-radio" aria-describedby="helper-radio-text" type="radio" value="" class="w-4 h-4 text-neutral-primary border-default-medium bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border appearance-none">
+                <input disabled aria-describedby="civic group" type="radio" class="w-4 h-4 text-neutral-primary border-default-medium bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border appearance-none">
             </div>
             <div class="ms-2 text-sm select-none">
-                <label for="helper-radio" class="font-medium text-heading mb-1">Civic Group</label>
+                <label for="helper-radio" class="font-medium text-fg-disabled mb-1">Civic Group</label>
                 <p id="helper-radio-text" class="text-xs font-normal text-body">Coming online soon!</p>
             </div>
           </div>
-          <div class="flex border border-default p-4 rounded-base">
+          <div class="flex border border-default p-4 rounded-base bg-disabled cursor-not-allowed">
             <div class="flex items-center h-5">
-                <input disabled id="helper-radio" aria-describedby="helper-radio-text" type="radio" value="" class="w-4 h-4 text-neutral-primary border-default-medium bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border appearance-none">
+                <input disabled id="helper-radio" aria-describedby="helper-radio-text" type="radio" class="w-4 h-4 text-neutral-primary border-default-medium bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border appearance-none">
             </div>
             <div class="ms-2 text-sm select-none">
-                <label for="helper-radio" class="font-medium text-heading mb-1">Birthday Party</label>
+                <label for="helper-radio" class="font-medium text-fg-disabled mb-1">Birthday Party</label>
                 <p id="helper-radio-text" class="text-xs font-normal text-body">Coming online soon!</p>
             </div>
           </div>
         </div>
-        <h5 class="font-bold text-xl py-2">Attendance (180/180)</h5>
+        <h5 class="font-bold text-xl py-2">Attendance (<span x-text="students + teachers + parents">21</span>/180)</h5>
+        <div x-show="totalAttendance <= 180" class="p-4 text-sm text-fg-brand-strong rounded-base bg-brand-softer" role="alert">
+          <span class="font-medium">We have 180 seats!</span> We do not seat more than 180 people.
+        </div>
+        <div x-show="totalAttendance > 180" class="p-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft" role="alert">
+          <span class="font-medium">We have 180 seats!</span> We do not seat more than 180 people.
+        </div>
         <div class="grid gap-2 lg:grid-cols-3">
           <div class="bg-neutral-primary-soft block max-w-sm p-6 border border-default rounded-base shadow-xs hover:bg-neutral-secondary-medium">
-            <h5 class="mb-3 text-2xl font-semibold tracking-tight text-heading leading-8 text-center">20</h5>
-            <p class="text-body text-center">20 minimum.</p>
-            <input id="large-range" type="range" value="20" min="20" max="180" class="w-full mt-3 h-3 bg-neutral-quaternary rounded-full appearance-none cursor-pointer range-lg">
+            <h5 x-text="students" class="mb-3 text-5xl font-semibold tracking-tight text-heading leading-8 text-center">20</h5>
+            <p class="text-body text-center text-sm">20 minimum required.</p>
+            <input x-model.number="students" id="large-range" type="range" value="20" min="20" max="180" class="w-full mt-3 h-3 bg-neutral-quaternary rounded-full appearance-none cursor-pointer range-lg">
             <label for="large-range" class="block mb-2.5 text-sm font-medium text-heading">Students</label>
+            <div class="flex gap-2 justify-center">
+              <button x-on:click="++students" x-bind:disabled="totalAttendance > 180" type="button" class="cursor-pointer disabled:cursor-not-allowed disabled:bg-disabled disabled:text-fg-disabled disabled:border-disabled inline-flex items-center justify-center  text-fg-brand bg-neutral-primary border border-brand hover:bg-brand hover:text-white focus:ring-4 focus:ring-brand-subtle rounded-base w-10 h-10 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5"><path d="M2 21a8 8 0 0 1 13.292-6"/><circle cx="10" cy="8" r="5"/><path d="M19 16v6"/><path d="M22 19h-6"/></svg>
+                <span class="sr-only">Add 1</span>
+              </button>
+              <button x-on:click="students = 20" type="button" class="cursor-pointer inline-flex items-center justify-center  text-fg-brand bg-neutral-primary border border-brand hover:bg-brand hover:text-white focus:ring-4 focus:ring-brand-subtle rounded-base w-10 h-10 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5"><path d="M2 21a8 8 0 0 1 11.873-7"/><circle cx="10" cy="8" r="5"/><path d="m17 17 5 5"/><path d="m22 17-5 5"/></svg>
+                <span class="sr-only">Reset</span>
+              </button>
+              <button x-on:click="--students" x-bind:disabled="students === 20" type="button" class="cursor-pointer disabled:cursor-not-allowed disabled:bg-disabled disabled:text-fg-disabled disabled:border-disabled inline-flex items-center justify-center  text-fg-brand bg-neutral-primary border border-brand hover:bg-brand hover:text-white focus:ring-4 focus:ring-brand-subtle rounded-base w-10 h-10 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5"><path d="M2 21a8 8 0 0 1 13.292-6"/><circle cx="10" cy="8" r="5"/><path d="M22 19h-6"/></svg>
+                <span class="sr-only">Subtract 1</span>
+              </button>
+            </div>
           </div>
           <div class="bg-neutral-primary-soft block max-w-sm p-6 border border-default rounded-base shadow-xs hover:bg-neutral-secondary-medium">
-            <h5 class="mb-3 text-2xl font-semibold tracking-tight text-heading leading-8 text-center">1</h5>
-            <p class="text-body text-center">minimum of 1 per 20 students</p>
-            <input id="large-range" type="range" value="20" min="20" max="180" class="w-full mt-3 h-3 bg-neutral-quaternary rounded-full appearance-none cursor-pointer range-lg">
+            <h5 x-text="teachers" class="mb-3 text-5xl font-semibold tracking-tight text-heading leading-8 text-center" x-text-"teachers">1</h5>
+            <p class="text-body text-center text-sm">minimum of 1 per 20 students</p>
+            <input x-model.number="teachers" id="large-range" type="range" value="20" min="1" max="180" class="w-full mt-3 h-3 bg-neutral-quaternary rounded-full appearance-none cursor-pointer range-lg">
             <label for="large-range" class="block mb-2.5 text-sm font-medium text-heading">Teachers</label>
+            <div class="flex gap-2 justify-center">
+              <button x-on:click="++teachers" x-bind:disabled="totalAttendance > 180" type="button" class="cursor-pointer disabled:cursor-not-allowed disabled:bg-disabled disabled:text-fg-disabled disabled:border-disabled inline-flex items-center justify-center  text-fg-brand bg-neutral-primary border border-brand hover:bg-brand hover:text-white focus:ring-4 focus:ring-brand-subtle rounded-base w-10 h-10 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5"><path d="M2 21a8 8 0 0 1 13.292-6"/><circle cx="10" cy="8" r="5"/><path d="M19 16v6"/><path d="M22 19h-6"/></svg>
+                <span class="sr-only">Add 1</span>
+              </button>
+              <button x-on:click="teachers = 1" type="button" class="cursor-pointer inline-flex items-center justify-center  text-fg-brand bg-neutral-primary border border-brand hover:bg-brand hover:text-white focus:ring-4 focus:ring-brand-subtle rounded-base w-10 h-10 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5"><path d="M2 21a8 8 0 0 1 11.873-7"/><circle cx="10" cy="8" r="5"/><path d="m17 17 5 5"/><path d="m22 17-5 5"/></svg>
+                <span class="sr-only">Reset</span>
+              </button>
+              <button x-on:click="--teachers" x-bind:disabled="teachers === 1" type="button" class="cursor-pointer disabled:cursor-not-allowed disabled:bg-disabled disabled:text-fg-disabled disabled:border-disabled inline-flex items-center justify-center  text-fg-brand bg-neutral-primary border border-brand hover:bg-brand hover:text-white focus:ring-4 focus:ring-brand-subtle rounded-base w-10 h-10 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5"><path d="M2 21a8 8 0 0 1 13.292-6"/><circle cx="10" cy="8" r="5"/><path d="M22 19h-6"/></svg>
+                <span class="sr-only">Subtract 1</span>
+              </button>
+            </div>
           </div>
           <div class="bg-neutral-primary-soft block max-w-sm p-6 border border-default rounded-base shadow-xs hover:bg-neutral-secondary-medium">
-            <h5 class="mb-3 text-2xl font-semibold tracking-tight text-heading leading-8 text-center">0</h5>
-            <p class="text-body text-center">Will be billed in the invoice.</p>
-            <input id="large-range" type="range" value="20" min="20" max="180" class="w-full mt-3 h-3 bg-neutral-quaternary rounded-full appearance-none cursor-pointer range-lg">
+            <h5 x-text="parents" class="mb-3 text-5xl font-semibold tracking-tight text-heading leading-8 text-center">0</h5>
+            <p class="text-body text-center text-sm">Billed in the school's invoice.</p>
+            <input x-model.number="parents" id="large-range" type="range" value="20" min="20" max="180" class="w-full mt-3 h-3 bg-neutral-quaternary rounded-full appearance-none cursor-pointer range-lg">
             <label for="large-range" class="block mb-2.5 text-sm font-medium text-heading">Parents</label>
+            <div class="flex gap-2 justify-center">
+              <button x-on:click="++parents" x-bind:disabled="totalAttendance > 180" type="button" class="cursor-pointer disabled:cursor-not-allowed disabled:bg-disabled disabled:text-fg-disabled disabled:border-disabled inline-flex items-center justify-center  text-fg-brand bg-neutral-primary border border-brand hover:bg-brand hover:text-white focus:ring-4 focus:ring-brand-subtle rounded-base w-10 h-10 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5"><path d="M2 21a8 8 0 0 1 13.292-6"/><circle cx="10" cy="8" r="5"/><path d="M19 16v6"/><path d="M22 19h-6"/></svg>
+                <span class="sr-only">Add 1</span>
+              </button>
+              <button x-on:click="parents = 0" type="button" class="cursor-pointer inline-flex items-center justify-center  text-fg-brand bg-neutral-primary border border-brand hover:bg-brand hover:text-white focus:ring-4 focus:ring-brand-subtle rounded-base w-10 h-10 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5"><path d="M2 21a8 8 0 0 1 11.873-7"/><circle cx="10" cy="8" r="5"/><path d="m17 17 5 5"/><path d="m22 17-5 5"/></svg>
+                <span class="sr-only">Reset</span>
+              </button>
+              <button x-on:click="--parents" x-bind:disabled="parents === 0" type="button" class="cursor-pointer disabled:cursor-not-allowed disabled:bg-disabled disabled:text-fg-disabled disabled:border-disabled inline-flex items-center justify-center  text-fg-brand bg-neutral-primary border border-brand hover:bg-brand hover:text-white focus:ring-4 focus:ring-brand-subtle rounded-base w-10 h-10 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5"><path d="M2 21a8 8 0 0 1 13.292-6"/><circle cx="10" cy="8" r="5"/><path d="M22 19h-6"/></svg>
+                <span class="sr-only">Subtract 1</span>
+              </button>
+            </div>
           </div>
         </div>
         <h5 class="font-bold text-xl py-2">Date and Time</h5>
+        <div class="p-4 text-sm text-fg-brand-strong rounded-base bg-brand-softer" role="alert">
+          <span class="font-medium">Minimum date is 7 days from today!</span> Plan ahead to select a good date.
+        </div>
         <div class="grid gap-2 lg:grid-cols-3">
           <div>
             <label for="first_name" class="block mb-2.5 text-sm font-medium text-heading">Date <span class="text-red-500">*</span></label>
-            <input type="date" id="first_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="John" required />
+            <input x-on:change="onDateChange" x-bind:min="minimumDate" type="date" id="first_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="John" required />
             <p id="helper-text-explanation" class="mt-2.5 text-sm text-body">The date of your event(s), at least 7 days from today.</p>
           </div>
         </div>
         <div class="grid gap-2 lg:grid-cols-2">
-          <div class="flex flex-col items-center bg-neutral-primary-soft p-6 border border-default rounded-base shadow-xs md:flex-row md:max-w-xl">
-            <img class="w-full rounded-base h-42 md:w-32 object-cover mb-4 md:mb-0" src="/themes/MaybornFlowbite/images/image.png" alt="">
-            <div class="flex flex-col justify-between md:p-4 leading-normal gap-2">
-                <div class="flex items-center">
-                    <input checked id="checked-checkbox" type="checkbox" value="" class="w-4 h-4 border border-default-medium rounded-xs bg-neutral-secondary-medium focus:ring-2 focus:ring-brand-soft">
-                    <label for="checked-checkbox" class="select-none ms-2 text-sm font-medium text-heading">Fri, Jan 30, 2026 @ 9:30 AM</label>
-                </div>
-                <div>
-                  <label for="countries" class="block mb-2.5 text-sm font-medium text-heading">Select a show</label>
-                  <select id="countries" class="block w-full px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body">
-                    <option selected>Select a show</option>
-                    <option value="US">United States</option>
-                    <option value="CA">Canada</option>
-                    <option value="FR">France</option>
-                    <option value="DE">Germany</option>
-                  </select>
-                </div>
-                <!--- <h5 class="mb-2 text-2xl font-bold tracking-tight text-heading">Streamlining your design process today.</h5> --->
-                <p class="mb-6 text-body">Planetarium</p>
+          <template x-for="event in events">
+            <div class="flex flex-col items-center bg-neutral-primary-soft p-6 border border-default rounded-base shadow-xs md:flex-row md:max-w-xl">
+              <img class="w-full rounded-base h-42 md:w-28 object-cover mb-4 md:mb-0" alt="Show Cover" x-bind:src="event.show ? getShow(event).cover : '/themes/MaybornFlowbite/images/image.png'">
+              <div class="flex flex-col justify-between md:p-4 leading-normal gap-2">
+                  <div class="flex items-center">
+                      <input x-model="event.checked" id="checked-checkbox" type="checkbox" class="w-4 h-4 border border-default-medium rounded-xs bg-neutral-secondary-medium focus:ring-2 focus:ring-brand-soft">
+                      <label for="checked-checkbox" class="select-none ms-2 text-sm font-medium text-heading">Fri, Jan 30, 2026 @ 9:30 AM</label>
+                  </div>
+                  <div>
+                    <label for="countries" class="block mb-2.5 text-sm font-medium text-heading">Select a show</label>
+                    <select x-bind:disabled="!event.checked" x-model="event.show" id="countries" class="block w-full px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body">
+                      <option selected>Select a show</option>
+                      <template x-for="show in shows">
+                        <option x-bind:value="JSON.stringify(show)" x-text="`${show.name} [${show.type}]`">Show Name</option>
+                      </template>
+                    </select>
+                  </div>
+                  <!--- <h5 class="mb-2 text-2xl font-bold tracking-tight text-heading">Streamlining your design process today.</h5> --->
+                  <p class="mb-6 text-body">Planetarium</p>
+              </div>
             </div>
-          </div>
+          </template>
         </div>
         <h5 class="font-bold text-xl py-2">Post Show</h5>
         <div class="grid gap-2 lg:grid-cols-2">
@@ -414,6 +466,7 @@
     <cfinclude template="inc/footer.cfm" />
     <script src="#$.siteConfig('themeAssetPath')#/js/schedule.js"></script>
     <script src="#$.siteConfig('themeAssetPath')#/js/shows.js"></script>
+    <script src="#$.siteConfig('themeAssetPath')#/js/reservation.js"></script>
     <script src="#$.siteConfig('themeAssetPath')#/js/flowbite.min.js"></script>
   </body>
 </html>

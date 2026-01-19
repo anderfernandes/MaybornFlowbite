@@ -8,4 +8,5 @@
 
 @theme {
     --color-brand: #003e7e;
+    --color-fg-brand: var(--color-brand)
 }
