@@ -303,7 +303,7 @@
           <div class="bg-neutral-primary-soft block max-w-sm p-6 border border-default rounded-base shadow-xs hover:bg-neutral-secondary-medium">
             <h5 x-text="parents" class="mb-3 text-5xl font-semibold tracking-tight text-heading leading-8 text-center">0</h5>
             <p class="text-body text-center text-sm">Billed in the school's invoice.</p>
-            <input x-model.number="parents" id="large-range" type="range" value="20" min="20" max="180" class="w-full mt-3 h-3 bg-neutral-quaternary rounded-full appearance-none cursor-pointer range-lg">
+            <input x-model.number="parents" id="large-range" type="range" value="0" min="0" max="180" class="w-full mt-3 h-3 bg-neutral-quaternary rounded-full appearance-none cursor-pointer range-lg">
             <label for="large-range" class="block mb-2.5 text-sm font-medium text-heading">Parents</label>
             <div class="flex gap-2 justify-center">
               <button x-on:click="++parents" x-bind:disabled="totalAttendance > 180" type="button" class="cursor-pointer disabled:cursor-not-allowed disabled:bg-disabled disabled:text-fg-disabled disabled:border-disabled inline-flex items-center justify-center  text-fg-brand bg-neutral-primary border border-brand hover:bg-brand hover:text-white focus:ring-4 focus:ring-brand-subtle rounded-base w-10 h-10 focus:outline-none">
@@ -338,8 +338,8 @@
               <img class="w-full rounded-base h-42 md:w-28 object-cover mb-4 md:mb-0" alt="Show Cover" x-bind:src="event.show ? getShow(event).cover : '/themes/MaybornFlowbite/images/image.png'">
               <div class="flex flex-col justify-between md:p-4 leading-normal gap-2">
                   <div class="flex items-center">
-                      <input x-model="event.checked" id="checked-checkbox" type="checkbox" class="w-4 h-4 border border-default-medium rounded-xs bg-neutral-secondary-medium focus:ring-2 focus:ring-brand-soft">
-                      <label for="checked-checkbox" class="select-none ms-2 text-sm font-medium text-heading">Fri, Jan 30, 2026 @ 9:30 AM</label>
+                      <input x-model="event.checked" x-bind:id="event.date.getTime()" type="checkbox" class="w-4 h-4 border border-default-medium rounded-xs bg-neutral-secondary-medium focus:ring-2 focus:ring-brand-soft">
+                      <label x-bind:for="event.date.getTime()" class="select-none ms-2 text-sm font-medium text-heading" x-text="format(event.date)"></label>
                   </div>
                   <div>
                     <label for="countries" class="block mb-2.5 text-sm font-medium text-heading">Select a show</label>
@@ -357,51 +357,63 @@
           </template>
         </div>
         <h5 class="font-bold text-xl py-2">Post Show</h5>
+        <div class="p-4 mb-4 text-sm text-fg-brand-strong rounded-base bg-brand-softer" role="alert">
+          <span class="font-medium">Select a post show.</span> Select one of the options below.
+        </div>
         <div class="grid gap-2 lg:grid-cols-2">
           <div class="flex border border-default p-4 rounded-base">
             <div class="flex items-center h-5">
-                <input checked name="postshow" id="helper-radio" aria-describedby="helper-radio-text" type="radio" value="" class="w-4 h-4 text-neutral-primary bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border border-default appearance-none">
+                <input x-model="postShow" name="postshow" id="postShowStarTalk" aria-describedby="helper-radio-text" type="radio" value="Star Talk" class="w-4 h-4 text-neutral-primary bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border border-default appearance-none">
             </div>
             <div class="ms-2 text-sm select-none">
-                <label for="helper-radio" class="font-medium text-heading mb-1">Star Talk</label>
-                <p id="helper-radio-text" class="text-xs font-normal text-body">A tour of the current evening sky showing all the constellations, planets and notable stars.</p>
+                <label for="postShowStarTalk" class="font-medium text-heading mb-1">Star Talk</label>
+                <p id="postShowStarTalk" class="text-xs font-normal text-body">A tour of the current evening sky showing all the constellations, planets and notable stars.</p>
             </div>
           </div>
           <div class="flex border border-default p-4 rounded-base">
             <div class="flex items-center h-5">
-                <input name="postshow" id="helper-radio" aria-describedby="helper-radio-text" type="radio" value="" class="w-4 h-4 text-neutral-primary border-default-medium bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border appearance-none">
+                <input x-model="postShow" name="postshow" id="postShowUniview" aria-describedby="helper-radio-text" type="radio" value="Uniview" class="w-4 h-4 text-neutral-primary border-default-medium bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border appearance-none">
             </div>
             <div class="ms-2 text-sm select-none">
-                <label for="helper-radio" class="font-medium text-heading mb-1">Uniview</label>
+                <label for="postShowUniview" class="font-medium text-heading mb-1">Uniview</label>
                 <p id="helper-radio-text" class="text-xs font-normal text-body">A flight through the planets of our solar system, other galaxies and beyond.</p>
             </div>
           </div>
         </div>
         <h5 class="font-bold text-xl py-2">Organization Information</h5>
+        <div class="p-4 mb-4 text-sm text-fg-brand-strong rounded-base bg-brand-softer" role="alert">
+          <span class="font-medium">Look for your organization below.</span> 
+          You will find it if your organization has done a field trip with us before.
+        </div>
         <div>
           <div class="grid gap-6 mb-6 md:grid-cols-2">
             <div>
                 <label for="first_name" class="block mb-2.5 text-sm font-medium text-heading">Enter the name of your organization</label>
-                <input type="text" id="first_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Organization Name" required />
+                <input x-model="query" type="text" id="first_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Organization Name" required />
             </div>
-            <div>
+            <div class="h-32 overflow-y-auto">
               <div class="grid gap-6">
+                <template x-for="{id, name, city, state} in availableOrganizations">
+                  <div class="flex">
+                    <div class="flex items-center h-5">
+                      <input x-model="schoolId" x-bind:id="id + name" type="radio" x-bind:value="id" name="default-radio" class="w-4 h-4 text-neutral-primary bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border border-default appearance-none">
+                    </div>
+                    <div class="ms-2 text-sm select-none">
+                        <label x-bind:for="id + name" class="font-medium text-heading" x-text="name"></label>
+                        <p id="helper-checkbox-text" class="text-xs font-normal text-body flex gap-1">
+                          <span x-text="city"></span>
+                          <span x-text="state"></span>
+                        </p>
+                    </div>
+                  </div>
+                </template>
                 <div class="flex">
                   <div class="flex items-center h-5">
-                    <input id="default-radio-1" type="radio" value="" name="default-radio" class="w-4 h-4 text-neutral-primary bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border border-default appearance-none">
+                      <input x-model="schoolId" id="no-organization" type="radio" value="0" name="default-radio" class="w-4 h-4 text-neutral-primary bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border border-default appearance-none">
                   </div>
                   <div class="ms-2 text-sm select-none">
-                      <label for="helper-checkbox" class="font-medium text-heading">Central Texas College</label>
-                      <p id="helper-checkbox-text" class="text-xs font-normal text-body">Killeen, Texas</p>
-                  </div>
-                </div>
-                <div class="flex">
-                  <div class="flex items-center h-5">
-                      <input id="default-radio-1" type="radio" value="" name="default-radio" class="w-4 h-4 text-neutral-primary bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border border-default appearance-none">
-                  </div>
-                  <div class="ms-2 text-sm select-none">
-                      <label for="helper-checkbox" class="font-medium text-heading">Mayborn Science Theater</label>
-                      <p id="helper-checkbox-text" class="text-xs font-normal text-body">Killeen, Texas</p>
+                      <label for="no-organization" class="font-medium text-heading">My organization is not on the list</label>
+                      <p id="helper-checkbox-text" class="text-xs font-normal text-body">Select this option if you can't find your organization</p>
                   </div>
                 </div>
               </div>
@@ -434,6 +446,7 @@
                 <label for="last_name" class="block mb-2.5 text-sm font-medium text-heading">Phone</label>
                 <input type="phone" min="10" max="10" id="last_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Phone" required />
             </div>
+          </div>
         </div>
         <h5 class="font-bold text-xl py-2">Organizer Information</h5>
         <div>
@@ -457,8 +470,71 @@
           </div>
         </div>
         <h5 class="font-bold text-xl py-2">Overview</h5>
+        <div class="p-4 mb-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft" role="alert" x-show="selectedEvents.length <= 0">
+          <span class="font-medium">You haven't selected any dates and/or shows!</span> Select a date, check the desired time slot(s) and the a show from the dropdown.
+        </div>
+        <div class="grid grid-cols-4 gap-2 my-2">
+          <div class="flex flex-col items-center justify-center">
+            <h5 class="font-bold flex gap-1">
+              <span x-text="students"></span>
+              <span>students</span>
+            </h5>
+            <p class="text-body text-sm">Attendance</p>
+          </div>
+          <div class="flex flex-col items-center justify-center">
+            <h5 class="font-bold flex gap-1">
+              <span x-text="teachers"></span>
+              <span x-text="teachers === 1 ? 'teacher' : 'teachers'">teacher</span>
+            </h5>
+            <p class="text-body text-sm">Attendance</p>
+          </div>
+          <div class="flex flex-col items-center justify-center">
+            <h5 class="font-bold">
+              <span x-text="parents"></span>
+              <span x-text="parents === 1 ? 'parent' : 'parents'">parents</span>
+            </h5>
+            <p class="text-body text-sm">Attendance</p>
+          </div>
+          <div class="flex flex-col items-center justify-center">
+            <h5 class="font-bold">
+              <span x-text="totalAttendance"></span>
+              <span>people</span>
+            </h5>
+            <p class="text-body text-sm">Total</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-4 gap-2 my-2">
+          <div class="flex flex-col items-center justify-center">
+            <h5 class="font-bold">School Group</h5>
+            <p class="text-body text-sm">Field Trip Type</p>
+          </div>
+          <div x-show="postShow" class="flex flex-col items-center justify-center">
+            <h5 class="font-bold" x-text="postShow"></h5>
+            <p class="text-body text-sm">Post Show</p>
+          </div>
+          <div x-show="schoolId > 0" class="flex flex-col items-start justify-center col-span-2">
+            <h5 class="font-bold" x-text="selectedOrganization?.name"></h5>
+            <p class="text-body text-sm">Organization</p>
+          </div>
+        </div>
+        <div class="grid lg:grid-cols-2 gap-2">
+          <template x-for="event in selectedEvents">
+            <div class="flex flex-col items-center bg-neutral-primary-soft p-6 border border-default rounded-base shadow-xs md:flex-row md:max-w-xl">
+              <img class="object-cover rounded-base h-48 w-32 mb-4 md:mb-0" x-bind:src="getShow(event).cover" alt="">
+              <div class="flex flex-col justify-between md:p-4 leading-normal">
+                <h5 class="mb-2 text-xl font-bold tracking-tight text-heading" x-text="getShow(event).name"></h5>
+                <p class="mb-6 text-body text-sm" x-text="format(event.date)"></p>
+                <div>
+                    <a href="##" type="button" class="inline-flex items-center w-auto text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
+                      Change
+                    </a>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
         <div class="flex justify-end gap-2">
-          <button type="button" class="text-white bg-brand box-border border border-transparent mt-4 hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">Start Over</button>
+          <button x-bind:disabled="!canSubmit" type="button" class="disabled:bg-disabled disabled:text-fg-disabled text-white bg-brand box-border border border-transparent mt-4 hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">Start Over</button>
           <button type="button" class="text-body bg-neutral-secondary-medium box-border border border-default-medium mt-4 hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">Submit</button>
         </div>
       </section>

@@ -17,8 +17,16 @@ document.addEventListener("alpine:init", () => {
       parents: 0,
       shows: [],
       organizations: [],
-      schoolId: 0,
+      schoolId: undefined,
       events: [],
+      postShow: "",
+      get canSubmit() {
+        if (this.totalAttendance < 20 || this.totalAttendance > 180) return false;
+
+        if (this.selectedEvents.length <= 0) return false
+
+        return true
+      },
       get totalAttendance() {
         return this.students + this.teachers + this.parents
       },
@@ -27,17 +35,12 @@ document.addEventListener("alpine:init", () => {
       },
       get availableOrganizations() {
         if (this.query) {
-          const organizations = this.organizations.filter((o) =>
+          return this.organizations.filter((o) =>
             o.name.toLowerCase().includes(this.query.toLowerCase()),
           );
-          organizations.push({
-            id: 0,
-            name: "My organization is not on the list",
-          });
-          return organizations;
         }
 
-        return [];
+        return this.organizations;
       },
       get selectedOrganization() {
         if (this.schoolId > 0)
