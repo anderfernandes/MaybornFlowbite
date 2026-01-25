@@ -3,8 +3,7 @@
   <cfhttpparam type="header" name="Content-Type" value="application/json">
   <cfhttpparam type="url" name="start" value="url.date">
 </cfhttp>
-<cfset schedule=deserializeJSON(res.filecontent)>
 <cfcontent reset="true" type="application/json">
 <cfoutput>
-  #serializeJSON(schedule)#
+  #res.filecontent#
 </cfoutput>

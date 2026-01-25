@@ -6,7 +6,7 @@
   </head>
   <body style="margin-top:64px">
     <cfinclude template="inc/navbar.cfm" />
-    <section class="h-[calc(100vh-60px)] w-full flex flex-col items-center justify-center text-center px-4" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/sites/default/assets/Image/cover.jpg');background-size:cover;background-position:bottom">
+    <section class="h-[calc(100vh-60px)] w-full flex flex-col items-center justify-center text-center px-4" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('#$.siteConfig('themeAssetPath')#/images/cover.jpg');background-size:cover;background-position:bottom">
       <h1 class="mb-4 text-4xl font-bold text-white tracking-tight md:text-5xl lg:text-6xl">
         Welcome to our universe!
       </h1>
@@ -222,7 +222,7 @@
           </div>
         </div>
       </section>
-      <section class="grid gap-2 max-w-4xl mx-auto" x-data="reservation" x-init="fetchData">
+      <form x-on:submit="handleSubmit" class="grid gap-2 max-w-4xl mx-auto" x-data="reservation" x-init="fetchData">
         <div class="grid gap-2 lg:grid-cols-3">
           <div class="flex border border-default p-4 rounded-base">
             <div class="flex items-center h-5">
@@ -282,7 +282,7 @@
           </div>
           <div class="bg-neutral-primary-soft block max-w-sm p-6 border border-default rounded-base shadow-xs hover:bg-neutral-secondary-medium">
             <h5 x-text="teachers" class="mb-3 text-5xl font-semibold tracking-tight text-heading leading-8 text-center" x-text-"teachers">1</h5>
-            <p class="text-body text-center text-sm">minimum of 1 per 20 students</p>
+            <p class="text-body text-center text-sm">minimum of 1 per 10 students</p>
             <input x-model.number="teachers" id="large-range" type="range" value="20" min="1" max="180" class="w-full mt-3 h-3 bg-neutral-quaternary rounded-full appearance-none cursor-pointer range-lg">
             <label for="large-range" class="block mb-2.5 text-sm font-medium text-heading">Teachers</label>
             <div class="flex gap-2 justify-center">
@@ -321,42 +321,42 @@
             </div>
           </div>
         </div>
-        <h5 class="font-bold text-xl py-2">Date and Time</h5>
+        <h5 class="font-bold text-xl py-2" id="date-and-time">Date and Time</h5>
         <div class="p-4 text-sm text-fg-brand-strong rounded-base bg-brand-softer" role="alert">
           <span class="font-medium">Minimum date is 7 days from today!</span> Plan ahead to select a good date.
         </div>
         <div class="grid gap-2 lg:grid-cols-3">
           <div>
-            <label for="first_name" class="block mb-2.5 text-sm font-medium text-heading">Date <span class="text-red-500">*</span></label>
-            <input x-on:change="onDateChange" x-bind:min="minimumDate" type="date" id="first_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="John" required />
+            <label for="date" class="block mb-2.5 text-sm font-medium text-heading">Date <span class="text-red-500">*</span></label>
+            <input x-on:change="onDateChange" x-bind:min="minimumDate" type="date" id="date" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="John" required />
             <p id="helper-text-explanation" class="mt-2.5 text-sm text-body">The date of your event(s), at least 7 days from today.</p>
           </div>
         </div>
         <div class="grid gap-2 lg:grid-cols-2">
-          <template x-for="event in events">
-            <div class="flex flex-col items-center bg-neutral-primary-soft p-6 border border-default rounded-base shadow-xs md:flex-row md:max-w-xl">
-              <img class="w-full rounded-base h-42 md:w-28 object-cover mb-4 md:mb-0" alt="Show Cover" x-bind:src="event.show ? getShow(event).cover : '/themes/MaybornFlowbite/images/image.png'">
-              <div class="flex flex-col justify-between md:p-4 leading-normal gap-2">
-                  <div class="flex items-center">
-                      <input x-model="event.checked" x-bind:id="event.date.getTime()" type="checkbox" class="w-4 h-4 border border-default-medium rounded-xs bg-neutral-secondary-medium focus:ring-2 focus:ring-brand-soft">
-                      <label x-bind:for="event.date.getTime()" class="select-none ms-2 text-sm font-medium text-heading" x-text="format(event.date)"></label>
-                  </div>
-                  <div>
-                    <label for="countries" class="block mb-2.5 text-sm font-medium text-heading">Select a show</label>
-                    <select x-bind:disabled="!event.checked" x-model="event.show" id="countries" class="block w-full px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body">
-                      <option selected>Select a show</option>
-                      <template x-for="show in shows">
-                        <option x-bind:value="JSON.stringify(show)" x-text="`${show.name} [${show.type}]`">Show Name</option>
-                      </template>
-                    </select>
-                  </div>
-                  <!--- <h5 class="mb-2 text-2xl font-bold tracking-tight text-heading">Streamlining your design process today.</h5> --->
-                  <p class="mb-6 text-body">Planetarium</p>
+          <template x-for="(event, i) in events">
+            <div class="border border-default rounded-base flex">
+              <div class="w-40">
+                <img x-bind:src="event.show ? getShow(event).cover : '/themes/MaybornFlowbite/images/image.png'" class="rounded-base w-full h-40 object-cover" />
+              </div>
+              <div class="grid content-center gap-1 p-4">
+                <div class="flex items-center">
+                  <input x-model="event.checked" x-bind:id="event.date.getTime()" type="checkbox" class="w-4 h-4 border border-default-medium rounded-xs bg-neutral-secondary-medium focus:ring-2 focus:ring-brand-soft">
+                  <label x-bind:for="event.date.getTime()" class="select-none ms-2 text-sm font-medium text-heading" x-text="format(event.date)"></label>
+                </div>
+                <div class="mt-4">
+                  <label x-bind:for="'show-' + i" class="block mb-2.5 text-sm font-medium text-heading">Select a show</label>
+                  <select x-bind:disabled="!event.checked" x-model="event.show" x-bind:id="'show-' + i" class="disabled:text-fg-disabled disabled:bg-disabled block w-full px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body">
+                    <option selected>Select a show</option>
+                    <template x-for="show in shows">
+                      <option x-bind:value="JSON.stringify(show)" x-text="`${show.name} [${show.type}]`">Show Name</option>
+                    </template>
+                  </select>
+                </div>
               </div>
             </div>
           </template>
         </div>
-        <h5 class="font-bold text-xl py-2">Post Show</h5>
+        <h5 class="font-bold text-xl py-2" id="postshows">Post Show</h5>
         <div class="p-4 mb-4 text-sm text-fg-brand-strong rounded-base bg-brand-softer" role="alert">
           <span class="font-medium">Select a post show.</span> Select one of the options below.
         </div>
@@ -388,15 +388,15 @@
         <div>
           <div class="grid gap-6 mb-6 md:grid-cols-2">
             <div>
-                <label for="first_name" class="block mb-2.5 text-sm font-medium text-heading">Enter the name of your organization</label>
-                <input x-model="query" type="text" id="first_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Organization Name" required />
+                <label for="query" class="block mb-2.5 text-sm font-medium text-heading">Enter the name of your organization</label>
+                <input x-model="query" type="text" id="query" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Organization Name" />
             </div>
             <div class="h-32 overflow-y-auto">
               <div class="grid gap-6">
                 <template x-for="{id, name, city, state} in availableOrganizations">
                   <div class="flex">
                     <div class="flex items-center h-5">
-                      <input x-model="schoolId" x-bind:id="id + name" type="radio" x-bind:value="id" name="default-radio" class="w-4 h-4 text-neutral-primary bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border border-default appearance-none">
+                      <input x-model.number="schoolId" x-bind:id="id + name" type="radio" x-bind:value="id" name="default-radio" class="w-4 h-4 text-neutral-primary bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border border-default appearance-none">
                     </div>
                     <div class="ms-2 text-sm select-none">
                         <label x-bind:for="id + name" class="font-medium text-heading" x-text="name"></label>
@@ -409,7 +409,7 @@
                 </template>
                 <div class="flex">
                   <div class="flex items-center h-5">
-                      <input x-model="schoolId" id="no-organization" type="radio" value="0" name="default-radio" class="w-4 h-4 text-neutral-primary bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border border-default appearance-none">
+                      <input x-model.number="schoolId" id="no-organization" type="radio" value="0" name="default-radio" class="w-4 h-4 text-neutral-primary bg-neutral-secondary-medium rounded-full checked:border-brand focus:ring-2 focus:outline-none focus:ring-brand-subtle border border-default appearance-none">
                   </div>
                   <div class="ms-2 text-sm select-none">
                       <label for="no-organization" class="font-medium text-heading">My organization is not on the list</label>
@@ -420,58 +420,63 @@
             </div>
           </div>
         </div>
-        <div>
-          <div class="grid gap-6 mb-6 md:grid-cols-2">
-            <div class="col-span-2">
-                <label for="first_name" class="block mb-2.5 text-sm font-medium text-heading">Organization Name</label>
-                <input type="text" id="first_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Organization Name" required />
-            </div>
-            <div>
-                <label for="last_name" class="block mb-2.5 text-sm font-medium text-heading">Address</label>
-                <input type="text" id="last_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Address" required />
-            </div>
-            <div>
-                <label for="last_name" class="block mb-2.5 text-sm font-medium text-heading">City</label>
-                <input type="text" id="last_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="City" required />
-            </div>
-            <div>
-                <label for="last_name" class="block mb-2.5 text-sm font-medium text-heading">State</label>
-                <input value="Texas" disabled type="text" id="last_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="State" required />
-            </div>
-            <div>
-                <label for="last_name" class="block mb-2.5 text-sm font-medium text-heading">ZIP</label>
-                <input type="text" id="last_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="ZIP" required />
-            </div>
-            <div>
-                <label for="last_name" class="block mb-2.5 text-sm font-medium text-heading">Phone</label>
-                <input type="phone" min="10" max="10" id="last_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Phone" required />
+        <template x-if="schoolId == 0">
+          <div>
+            <div class="grid gap-6 mb-6 md:grid-cols-2">
+              <div class="col-span-2">
+                  <label for="organization_name" class="block mb-2.5 text-sm font-medium text-heading">Organization Name</label>
+                  <input x-model="school" type="text" id="organization_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Organization Name" required />
+              </div>
+              <div>
+                  <label for="organization_address" class="block mb-2.5 text-sm font-medium text-heading">Address</label>
+                  <input x-model="address" type="text" id="organization_address" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Address" required />
+              </div>
+              <div>
+                  <label for="organization_city" class="block mb-2.5 text-sm font-medium text-heading">City</label>
+                  <input x-model="city" type="text" id="organiation_city" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="City" required />
+              </div>
+              <div>
+                  <label for="organization_state" class="block mb-2.5 text-sm font-medium text-heading">State</label>
+                  <input value="Texas" disabled type="text" id="organization_state" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="State" required />
+              </div>
+              <div>
+                  <label for="organization_zip" class="block mb-2.5 text-sm font-medium text-heading">ZIP</label>
+                  <input x-model="zip" type="text" minlength="5" maxlength="5" id="organization_zip" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="ZIP" required />
+              </div>
+              <div>
+                  <label for="organization_phone" class="block mb-2.5 text-sm font-medium text-heading">Phone</label>
+                  <input x-model="phone" type="phone" minlength="10" maxlength="10" id="organization_phone" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Phone" required />
+              </div>
             </div>
           </div>
-        </div>
+        </template>
         <h5 class="font-bold text-xl py-2">Organizer Information</h5>
         <div>
           <div class="grid gap-6 mb-6 md:grid-cols-2">
             <div>
-                <label for="last_name" class="block mb-2.5 text-sm font-medium text-heading">First Name</label>
-                <input disabled type="text" id="last_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="First Name" required />
+                <label for="firstname" class="block mb-2.5 text-sm font-medium text-heading">First Name</label>
+                <input x-model="firstname" type="text" id="firstname" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="First Name" required />
             </div>
             <div>
-                <label for="last_name" class="block mb-2.5 text-sm font-medium text-heading">Last Name</label>
-                <input type="text" id="last_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Last Name" required />
+                <label for="lastname" class="block mb-2.5 text-sm font-medium text-heading">Last Name</label>
+                <input x-model="lastname" type="text" id="lastname" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Last Name" required />
             </div>
             <div>
-                <label for="last_name" class="block mb-2.5 text-sm font-medium text-heading">Email</label>
-                <input disabled type="email" id="last_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Email" required />
+                <label for="email" class="block mb-2.5 text-sm font-medium text-heading">Email</label>
+                <input x-model="email" type="email" id="email" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Email" required />
             </div>
             <div>
-                <label for="last_name" class="block mb-2.5 text-sm font-medium text-heading">Phone</label>
-                <input type="text" id="last_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Phone" required />
+                <label for="phone" class="block mb-2.5 text-sm font-medium text-heading">Phone</label>
+                <input x-model="cell" minlength="10" maxlength="10" type="text" id="phone" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Phone" required />
             </div>
           </div>
         </div>
         <h5 class="font-bold text-xl py-2">Overview</h5>
-        <div class="p-4 mb-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft" role="alert" x-show="selectedEvents.length <= 0">
-          <span class="font-medium">You haven't selected any dates and/or shows!</span> Select a date, check the desired time slot(s) and the a show from the dropdown.
+        <div x-show="selectedEvents.length <= 0" class="p-4 mb-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft" role="alert">
+          <span class="font-medium">You haven't selected any <a class="underline" href="##date-and-time">dates</a> and shows!</span> Select a date, check the desired time slot(s) and the a show from the dropdown.
+        </div>
+        <div x-show="postShow.length == 0" class="p-4 mb-4 text-sm text-fg-danger-strong rounded-base bg-danger-soft" role="alert">
+          <span class="font-medium">You haven't selected <a class="underline" href="##postshows">post show</a>!</span> Constellations of the current evening sky our  full dome flight around planets and galaxies?
         </div>
         <div class="grid grid-cols-4 gap-2 my-2">
           <div class="flex flex-col items-center justify-center">
@@ -512,9 +517,13 @@
             <h5 class="font-bold" x-text="postShow"></h5>
             <p class="text-body text-sm">Post Show</p>
           </div>
-          <div x-show="schoolId > 0" class="flex flex-col items-start justify-center col-span-2">
-            <h5 class="font-bold" x-text="selectedOrganization?.name"></h5>
+          <div x-show="schoolId >= 0" class="flex flex-col items-center justify-center">
+            <h5 class="font-bold" x-text="schoolId == 0 ? school : selectedOrganization?.name"></h5>
             <p class="text-body text-sm">Organization</p>
+          </div>
+          <div x-show="firstname.length > 0 && lastname.length > 0" class="flex flex-col items-center justify-center">
+            <h5 class="font-bold" x-text="`${firstname} ${lastname}`"></h5>
+            <p class="text-body text-sm">Organizer</p>
           </div>
         </div>
         <div class="grid lg:grid-cols-2 gap-2">
@@ -525,7 +534,7 @@
                 <h5 class="mb-2 text-xl font-bold tracking-tight text-heading" x-text="getShow(event).name"></h5>
                 <p class="mb-6 text-body text-sm" x-text="format(event.date)"></p>
                 <div>
-                    <a href="##" type="button" class="inline-flex items-center w-auto text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
+                    <a href="##date-and-time" type="button" class="inline-flex items-center w-auto text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">
                       Change
                     </a>
                 </div>
@@ -533,11 +542,15 @@
             </div>
           </template>
         </div>
-        <div class="flex justify-end gap-2">
-          <button x-bind:disabled="!canSubmit" type="button" class="disabled:bg-disabled disabled:text-fg-disabled text-white bg-brand box-border border border-transparent mt-4 hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">Start Over</button>
-          <button type="button" class="text-body bg-neutral-secondary-medium box-border border border-default-medium mt-4 hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">Submit</button>
+        <div class="grid gap-1 my-2">
+          <label for="memo" class="block mb-2.5 text-sm font-medium text-heading">Notes (optional)</label>
+          <textarea x-model="memo" id="memo" rows="4" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full p-3.5 shadow-xs placeholder:text-body" placeholder="Write anything that will help us with your reservation."></textarea>
         </div>
-      </section>
+        <div class="flex justify-end gap-2">
+          <button x-bind:disabled="!canSubmit"  type="submit" class="disabled:bg-disabled disabled:text-fg-disabled disabled:cursor-not-allowed cursor-pointer text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">Submit</button>
+          <button type="button" class="text-body bg-neutral-primary-soft border border-default hover:bg-neutral-secondary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary-soft shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none">Start Over</button>
+        </div>
+      </form>
     </main>
     <cfinclude template="inc/footer.cfm" />
     <script src="#$.siteConfig('themeAssetPath')#/js/schedule.js"></script>
