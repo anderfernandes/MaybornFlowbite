@@ -153,12 +153,23 @@ document.addEventListener("alpine:init", () => {
         return `${date} @ ${time}`;
       },
       /**
+       * @param {Date} date
+       */
+      formatISO(date) {
+        const d = date.toLocaleDateString("en-CA");
+        const t = date.toLocaleTimeString("en-GB");
+        return d + "T" + t;
+      },
+      /**
        * @param {Event} e
        */
       async handleSubmit(e) {
         e.preventDefault();
 
-        const url = new URL("/create-reservation", API_URL);
+        if (!confirm("Are you sure you want to submit this reservation?"))
+          return;
+
+        const url = new URL("/api/create-reservation", API_URL);
 
         url.searchParams.append("students", this.students);
         url.searchParams.append("teachers", this.teachers);
@@ -183,12 +194,14 @@ document.addEventListener("alpine:init", () => {
           (event) => event.checked,
         )) {
           url.searchParams.append("show_id", JSON.parse(show).id);
-          url.searchParams.append("date", date.toISOString());
+          url.searchParams.append("date", this.formatISO(date));
         }
 
-        console.log(url.search);
+        const req = await fetch(url);
 
-        //const req = await fetch("/api/create-reservation");
+        const res = await req.json();
+
+        console.log(res);
       },
     };
   });
