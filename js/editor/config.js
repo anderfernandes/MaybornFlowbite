@@ -1,6 +1,8 @@
 if ("CKEDITOR" in window) {
   CKEDITOR.editorConfig = function (config) {
-    config.extraAllowedContent = "template[*]";
+    config.allowedContent = true;
+    config.entities = false;
+    config.basicEntities = false;
   };
 
   CKEDITOR.instances.body.on("instanceReady", function (e) {

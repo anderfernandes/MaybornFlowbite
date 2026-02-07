@@ -9,8 +9,6 @@ document.addEventListener("alpine:init", () => {
     minDate.setMilliseconds(0);
     minDate.setDate(minDate.getDate() + 7);
 
-    const API_URL = "http://192.168.1.187:8888/api";
-
     return {
       students: 20,
       teachers: 2,
@@ -33,6 +31,9 @@ document.addEventListener("alpine:init", () => {
       state: "Texas",
       zip: "",
       memo: "",
+      get isInCapacity() {
+        return this.totalAttendance <= 180;
+      },
       get canSubmit() {
         if (this.totalAttendance < 20 || this.totalAttendance > 180)
           return false;
@@ -63,16 +64,25 @@ document.addEventListener("alpine:init", () => {
       },
       async onDateChange(e) {
         this.selectedDate = new Date(e.currentTarget.value);
+
+        if ([5, 6].includes(this.selectedDate.getDay())) {
+          alert("School Group reservations are not avaialble on weekends.");
+          return;
+        }
+
         this.selectedDate.setHours(
           this.selectedDate.getHours() + TIMEZONEOFFSET,
         );
+
         this.events = [];
+
         if (this.selectedDate.getTime() < this.minDate.getTime()) {
           alert("The selected date must be at least a week away from today.");
           return;
         }
 
-        const url = new URL(API_URL + "/find-available-events");
+        const url = new URL("/api/find-available-events", window.location.href);
+
         url.searchParams.set("date", e.currentTarget.value);
 
         url.searchParams.set(
@@ -111,14 +121,14 @@ document.addEventListener("alpine:init", () => {
         }
       },
       async fetchShows() {
-        const url = new URL(API_URL + "/shows");
-        const req = await fetch(url);
+        const req = await fetch(new URL("/api/shows", window.location.href));
         const res = await req.json();
         this.shows = res.data;
       },
       async fetchOrganizations() {
-        const url = new URL(API_URL + "/organizations");
-        const req = await fetch(url);
+        const req = await fetch(
+          new URL("/api/organizations", window.location.href),
+        );
         this.organizations = await req.json();
       },
       async fetchData() {
@@ -127,7 +137,16 @@ document.addEventListener("alpine:init", () => {
       },
       getShow(event) {
         if (event.show === undefined) return { name: "", type: "", date: "" };
-        return JSON.parse(event.show);
+
+        const show = JSON.parse(event.show);
+
+        if (show.cover.includes("http")) {
+          const url = new URL(show.cover);
+          url.protocol = "https";
+          show.cover = url.toString();
+        }
+
+        return show;
       },
       selectedDate: undefined,
       query: "",
@@ -169,7 +188,7 @@ document.addEventListener("alpine:init", () => {
         if (!confirm("Are you sure you want to submit this reservation?"))
           return;
 
-        const url = new URL("/api/create-reservation", API_URL);
+        const url = new URL("/api/create-reservation", window.location.href);
 
         url.searchParams.append("students", this.students);
         url.searchParams.append("teachers", this.teachers);
@@ -201,7 +220,19 @@ document.addEventListener("alpine:init", () => {
 
         const res = await req.json();
 
-        console.log(res);
+        if (req.status > 299) {
+          alert(
+            "An error occurred trying while submiting your reservation. Please try again in a few minutes.",
+          );
+
+          return;
+        }
+
+        alert(
+          "We have received your reservation request, thank you! We will get back to you within 2 business days.",
+        );
+
+        window.location.href = new URL("/", window.location.href);
       },
     };
   });
