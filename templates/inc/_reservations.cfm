@@ -105,8 +105,7 @@
         </div>
       </div>
     </section>
-    <!--- Attendance -->
-
+    <!--- Attendance --->
     <section class="grid w-full gap-2 p-4 lg:mx-auto lg:max-w-5xl">
       <h5 class="text-xl font-bold">
         Attendance (<span x-text="students + teachers + parents">21</span>/180)
@@ -439,8 +438,7 @@
         </div>
       </div>
     </section>
-    <!--- Date and Time-->
-
+    <!--- Date and Time --->
     <section class="w-full bg-white p-4">
       <div class="grid w-full gap-2 p-4 lg:mx-auto lg:max-w-5xl">
         <h5 class="text-xl font-bold" id="date-and-time">Date and Time</h5>
@@ -530,8 +528,7 @@
         </div>
       </div>
     </section>
-    <!--- Post Show -->
-
+    <!--- Post Show --->
     <section class="grid w-full gap-2 p-4 lg:mx-auto lg:max-w-5xl">
       <h5 class="py-2 text-xl font-bold" id="postshows">Post Show</h5>
 
@@ -600,7 +597,6 @@
       </div>
     </section>
     <!--- Organization --->
-
     <section class="w-full bg-white p-4">
       <div class="grid gap-2 p-4 lg:mx-auto lg:max-w-5xl">
         <h5 class="text-xl font-bold">Organization Information</h5>
@@ -806,7 +802,6 @@
       </div>
     </section>
     <!--- Organizer --->
-
     <section class="grid w-full gap-2 p-4 lg:mx-auto lg:max-w-5xl">
       <h5 class="py-2 text-xl font-bold">Organizer Information</h5>
 
@@ -881,7 +876,6 @@
       </div>
     </section>
     <!--- Overview --->
-
     <section class="w-full bg-white p-4">
       <div class="grid w-full gap-2 p-4 lg:mx-auto lg:max-w-5xl">
         <h5 class="py-2 text-xl font-bold">Overview</h5>
