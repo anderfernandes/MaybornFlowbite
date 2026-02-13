@@ -8,9 +8,13 @@ document.addEventListener("alpine:init", function () {
         const req = await fetch("/index.cfm/api/shows");
         const res = await req.json();
         this.shows = res.data.map((s) => {
-          let cover = new URL(s.cover);
+          //let cover = new URL(s.cover);
+          //console.log(cover);
+          //if (cover.protocol === "http") cover.protocol = "https";
+          //return { ...s, cover };
+          const file = "/shows/" + s.cover.split("/").at(-1);
+          const cover = BASE_COVER_URL + file;
           console.log(cover);
-          if (cover.protocol === "http") cover.protocol = "https";
           return { ...s, cover };
         });
       },

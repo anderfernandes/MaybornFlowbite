@@ -140,11 +140,8 @@ document.addEventListener("alpine:init", () => {
 
         const show = JSON.parse(event.show);
 
-        if (show.cover.includes("http")) {
-          const url = new URL(show.cover);
-          url.protocol = "https";
-          show.cover = url.toString();
-        }
+        const file = "/shows/" + show.cover.split("/").at(-1);
+        show.cover = BASE_COVER_URL + file;
 
         return show;
       },

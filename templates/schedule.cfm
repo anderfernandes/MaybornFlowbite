@@ -38,7 +38,7 @@
             </a>
           </div>
           <div class="flex gap-2">
-            <img class="h-48 object-cover rounded" src="#data.show.cover#" />
+            <img class="h-48 object-cover rounded" src="/sites/#$.siteConfig('siteId')#/assets/shows/#listLast(data.show.cover, '/\')#" />
             <div class="grid content-start md:content-center">
               <p class="text-body text-lg">
                 #dateTimeFormat(parseDateTime(data.start), "dddd, mmm d yyyy @ h:nn tt")# &middot;
@@ -88,7 +88,7 @@
                   <a href="?id=#e.id#" class="flex-none rounded w-56 h-104 border border-default shadow-xs md:hover:scale-105">
                     <div class="flex flex-col">
                       <h5 class="font-extrabold text-lg p-4 truncate">#e.show.name#</h5>
-                      <img class="h-64 object-cover" src="#e.show.cover#" />
+                      <img class="h-64 object-cover" src="/sites/#$.siteConfig('siteId')#/assets/shows/#listLast(e.show.cover, '/\')#" />
                       <div class="grid gap-2 content-start m-4">
                         <p class="text-body text-sm">
                           #dateTimeFormat(parseDateTime(e.start), "ddd, mmm d @ h:nn tt")#

@@ -35,7 +35,7 @@
             </a>
           </div>
           <div class="flex justify-center">
-            <img class="w-full md:w-64 object-cover rounded" src="#show.cover#" />
+            <img class="w-full md:w-64 object-cover rounded" src="/sites/#$.siteConfig('siteId')#/assets/shows/#listLast(show.cover, '/\')#" />
           </div>
           <p class="text-lg">#show.description#</p>
         <cfelse>
