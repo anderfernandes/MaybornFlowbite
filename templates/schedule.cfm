@@ -106,6 +106,7 @@
           </cfloop>
         </cfif>
       </main>
+      <cfinclude template="inc/footer.cfm" />
     </body>
   </html>
 </cfoutput>

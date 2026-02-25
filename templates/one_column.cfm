@@ -11,6 +11,7 @@
         crumbList=false,
         showMetaImage=false
       )#
+      <cfinclude template="inc/footer.cfm" />
       <!--- <cfinclude template="inc/reservations.cfm" /> --->
     </body>
   </html>

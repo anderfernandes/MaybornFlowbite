@@ -1,5 +1,5 @@
 <cfoutput>
-  <footer class="bg-gray-100 p-4 sm:p-6">
+  <footer class="bg-gray-100 px-4 py-12 sm:p-6">
     <div class="mx-auto max-w-7xl">
       <div class="md:flex md:justify-between">
         <div class="mb-6 md:mb-0">
